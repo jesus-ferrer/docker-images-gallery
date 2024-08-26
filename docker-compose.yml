@@ -10,7 +10,7 @@ services:
       - ./frontend:/app
     restart: always
     environment:
-      - CHOKIDAR_USEPOLLING=true
+      CHOKIDAR_USEPOLLING: true
 
   api:
     build: ./api
@@ -20,4 +20,28 @@ services:
       - ./api:/app
     restart: always
     environment:
-      - UNSPLASH_KEY=nOH2d65K0Kr9LZDTLlKyjs3v-AirAEo-XE7HA0Lpe8o
+      UNSPLASH_KEY: nOH2d65K0Kr9LZDTLlKyjs3v-AirAEo-XE7HA0Lpe8o
+
+  mongo:
+    image: mongo:4.4.5
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+  
+  mongo-express:
+    image: mongo-express:0.54
+    ports:
+      - 8081:8081
+    restart: always
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 1234
+      ME_CONFIG_MONGODB_SERVER: mongo
+
+volumes:
+  mongodb_data:
