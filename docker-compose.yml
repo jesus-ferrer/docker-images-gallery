@@ -1,0 +1,23 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    restart: always
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  api:
+    build: ./api
+    ports:
+      - 5050:5050
+    volumes:
+      - ./api:/app
+    restart: always
+    environment:
+      - UNSPLASH_KEY=nOH2d65K0Kr9LZDTLlKyjs3v-AirAEo-XE7HA0Lpe8o
